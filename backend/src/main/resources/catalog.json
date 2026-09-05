@@ -1,0 +1,360 @@
+{
+  "slug": "artwork",
+  "pkg": "artwork",
+  "name": "知华包装稿件审签",
+  "subtitle": "包装版本、物料合规、跨部门审签与发布追溯",
+  "accent": "#80596b",
+  "modules": [
+    {
+      "key": "products",
+      "label": "包装产品",
+      "description": "产品条码与必备包装文案",
+      "initial": "ACTIVE",
+      "editable": true,
+      "creatable": true,
+      "fields": [
+        {
+          "key": "name",
+          "label": "产品名称",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "sku",
+          "label": "SKU",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "barcode",
+          "label": "EAN-13 条码",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "requiredText",
+          "label": "必须包含的文案",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        }
+      ],
+      "actions": []
+    },
+    {
+      "key": "artworks",
+      "label": "稿件任务",
+      "description": "关联版本、送审、独立审签和发布归档",
+      "initial": "DRAFT",
+      "editable": true,
+      "creatable": true,
+      "fields": [
+        {
+          "key": "product",
+          "label": "产品",
+          "type": "ref",
+          "required": true,
+          "ref": "products",
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "market",
+          "label": "目标市场",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "owner",
+          "label": "项目负责人",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        }
+      ],
+      "actions": [
+        {
+          "key": "submit",
+          "label": "指定版本送审",
+          "from": [
+            "DRAFT"
+          ],
+          "to": "REVIEW",
+          "role": "OPERATOR",
+          "separate": false,
+          "fields": [
+            {
+              "key": "version",
+              "label": "送审版本",
+              "type": "ref",
+              "required": true,
+              "ref": "versions",
+              "options": [],
+              "min": null,
+              "max": null
+            }
+          ]
+        },
+        {
+          "key": "reopen",
+          "label": "撤回修订",
+          "from": [
+            "REVIEW"
+          ],
+          "to": "DRAFT",
+          "role": "OPERATOR",
+          "separate": false,
+          "fields": []
+        },
+        {
+          "key": "release",
+          "label": "审批发布",
+          "from": [
+            "REVIEW"
+          ],
+          "to": "RELEASED",
+          "role": "ADMIN",
+          "separate": true,
+          "fields": []
+        },
+        {
+          "key": "obsolete",
+          "label": "废止版本",
+          "from": [
+            "RELEASED"
+          ],
+          "to": "OBSOLETE",
+          "role": "ADMIN",
+          "separate": true,
+          "fields": [
+            {
+              "key": "reason",
+              "label": "废止原因",
+              "type": "text",
+              "required": true,
+              "ref": null,
+              "options": [],
+              "min": null,
+              "max": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "versions",
+      "label": "设计版本",
+      "description": "可上传实际稿件附件，保存文案与条码快照",
+      "initial": "DRAFT",
+      "editable": true,
+      "creatable": true,
+      "fields": [
+        {
+          "key": "artwork",
+          "label": "稿件任务",
+          "type": "ref",
+          "required": true,
+          "ref": "artworks",
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "revision",
+          "label": "版本号",
+          "type": "integer",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": "1",
+          "max": "1000000"
+        },
+        {
+          "key": "copyText",
+          "label": "包装文案",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "barcode",
+          "label": "印刷条码",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "changeNote",
+          "label": "版本变更说明",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        }
+      ],
+      "actions": []
+    },
+    {
+      "key": "reviews",
+      "label": "部门审签",
+      "description": "质量、法务、市场必须由不同人员完成",
+      "initial": "PENDING",
+      "editable": false,
+      "creatable": false,
+      "fields": [
+        {
+          "key": "artwork",
+          "label": "稿件任务",
+          "type": "ref",
+          "required": true,
+          "ref": "artworks",
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "version",
+          "label": "设计版本",
+          "type": "ref",
+          "required": true,
+          "ref": "versions",
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "discipline",
+          "label": "审核职能",
+          "type": "select",
+          "required": true,
+          "ref": null,
+          "options": [
+            "QUALITY",
+            "LEGAL",
+            "MARKETING"
+          ],
+          "min": null,
+          "max": null
+        }
+      ],
+      "actions": [
+        {
+          "key": "approve",
+          "label": "同意稿件",
+          "from": [
+            "PENDING"
+          ],
+          "to": "APPROVED",
+          "role": "REVIEWER",
+          "separate": true,
+          "fields": [
+            {
+              "key": "comment",
+              "label": "审核意见",
+              "type": "text",
+              "required": true,
+              "ref": null,
+              "options": [],
+              "min": null,
+              "max": null
+            }
+          ]
+        },
+        {
+          "key": "reject",
+          "label": "拒绝稿件",
+          "from": [
+            "PENDING"
+          ],
+          "to": "REJECTED",
+          "role": "REVIEWER",
+          "separate": true,
+          "fields": [
+            {
+              "key": "comment",
+              "label": "拒绝原因",
+              "type": "text",
+              "required": true,
+              "ref": null,
+              "options": [],
+              "min": null,
+              "max": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "releases",
+      "label": "发布清单",
+      "description": "固定发布版本、附件摘要及审批人快照",
+      "initial": "RELEASED",
+      "editable": false,
+      "creatable": false,
+      "fields": [
+        {
+          "key": "artwork",
+          "label": "稿件任务",
+          "type": "ref",
+          "required": true,
+          "ref": "artworks",
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "version",
+          "label": "设计版本",
+          "type": "ref",
+          "required": true,
+          "ref": "versions",
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "manifest",
+          "label": "附件与审批清单",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        }
+      ],
+      "actions": []
+    }
+  ]
+}

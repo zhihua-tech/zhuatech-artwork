@@ -1,0 +1,114 @@
+[
+  {
+    "op": "create",
+    "as": "product",
+    "module": "products",
+    "data": {
+      "name": "知华智能网关",
+      "sku": "GATEWAY-001",
+      "barcode": "6901234567892",
+      "requiredText": "请阅读使用说明"
+    }
+  },
+  {
+    "op": "create",
+    "as": "artwork",
+    "module": "artworks",
+    "data": {
+      "product": "$product.id",
+      "market": "中国市场",
+      "owner": "包装项目负责人"
+    }
+  },
+  {
+    "op": "create",
+    "as": "version",
+    "module": "versions",
+    "data": {
+      "artwork": "$artwork.id",
+      "revision": 1,
+      "copyText": "知华智能网关。请阅读使用说明。",
+      "barcode": "6901234567892",
+      "changeNote": "首版包装稿"
+    }
+  },
+  {
+    "op": "attachment",
+    "target": "version"
+  },
+  {
+    "op": "action",
+    "target": "artwork",
+    "action": "submit",
+    "data": {
+      "version": "$version.id"
+    }
+  },
+  {
+    "op": "find",
+    "as": "quality",
+    "module": "reviews",
+    "where": {
+      "data.discipline": "QUALITY"
+    }
+  },
+  {
+    "op": "find",
+    "as": "legal",
+    "module": "reviews",
+    "where": {
+      "data.discipline": "LEGAL"
+    }
+  },
+  {
+    "op": "find",
+    "as": "marketing",
+    "module": "reviews",
+    "where": {
+      "data.discipline": "MARKETING"
+    }
+  },
+  {
+    "op": "action",
+    "target": "quality",
+    "action": "approve",
+    "data": {
+      "comment": "条码及质量信息核验通过"
+    },
+    "role": "reviewer"
+  },
+  {
+    "op": "action",
+    "target": "legal",
+    "action": "approve",
+    "data": {
+      "comment": "包装声明审核通过"
+    },
+    "role": "reviewer2"
+  },
+  {
+    "op": "action",
+    "target": "marketing",
+    "action": "approve",
+    "data": {
+      "comment": "品牌规范和市场信息审核通过"
+    },
+    "role": "reviewer3"
+  },
+  {
+    "op": "action",
+    "target": "artwork",
+    "action": "release",
+    "data": {},
+    "role": "admin"
+  },
+  {
+    "op": "action",
+    "target": "artwork",
+    "action": "obsolete",
+    "data": {
+      "reason": "产品包装升级，停用旧版"
+    },
+    "role": "admin"
+  }
+]
