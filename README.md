@@ -1,5 +1,7 @@
 # 知华包装稿件审签
 
+[简体中文](README.md) | [English](README.en.md)
+
 > 让被批准的稿件，就是最终发布的那一版。
 
 由 [知华科技（上海如静知华信息科技有限公司）](https://www.zhuatech.cn/) 提供的 Java + H5 前后端分离企业软件社区源码版，数据库为 MySQL。
